@@ -4,6 +4,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProfileController;
+use App\Http\Controllers\Api\PropertyOwnerController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -29,3 +30,11 @@ Route::delete('/user/{id}', [UserController::class, 'destroy']);
 //User Specific APIs = update of image based kong kinsa tong user nga ni log in
 Route::get('/profile/show', [ProfileController::class, 'show']);
 Route::put('/profile/image', [ProfileController::class, 'image'])->name('profile.image');
+
+Route::controller(PropertyOwnerController::class)->group(function () {
+    Route::get('/owner',               'index');
+    Route::get('/owner/{id}',          'show');
+    Route::post('/owner',              'store');
+    Route::put('/owner/{id}',          'update');
+    Route::delete('/owner/{id}',       'destroy');
+});

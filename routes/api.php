@@ -6,6 +6,9 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PropertyOwnerController;
 use App\Http\Controllers\Api\PropertyController;
+use App\Http\Controllers\Api\LandClassificationController;
+use App\Models\LandClassification;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -46,4 +49,12 @@ Route::controller(PropertyController::class)->group(function () {
     Route::post('/property',              'store');
     Route::put('/property/{id}',          'update');
     Route::delete('/property/{id}',       'destroy');
+});
+
+Route::controller(LandClassificationController::class)->group(function () {
+    Route::get('/classification',               'index');
+    Route::get('/classification/{id}',          'show');
+    Route::post('/classification',              'store');
+    Route::put('/classification/{id}',          'update');
+    Route::delete('/classification/{id}',       'destroy');
 });

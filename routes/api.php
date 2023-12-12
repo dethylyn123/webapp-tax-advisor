@@ -1,13 +1,14 @@
 <?php
 
 use Illuminate\Http\Request;
+use App\Models\LandClassification;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProfileController;
-use App\Http\Controllers\Api\PropertyOwnerController;
 use App\Http\Controllers\Api\PropertyController;
+use App\Http\Controllers\Api\PropertyOwnerController;
+use App\Http\Controllers\Api\RealPropertyTaxController;
 use App\Http\Controllers\Api\LandClassificationController;
-use App\Models\LandClassification;
 
 /*
 |--------------------------------------------------------------------------
@@ -57,4 +58,12 @@ Route::controller(LandClassificationController::class)->group(function () {
     Route::post('/classification',              'store');
     Route::put('/classification/{id}',          'update');
     Route::delete('/classification/{id}',       'destroy');
+});
+
+Route::controller(RealPropertyTaxController::class)->group(function () {
+    Route::get('/tax',               'index');
+    Route::get('/tax/{id}',          'show');
+    Route::post('/tax',              'store');
+    Route::put('/tax/{id}',          'update');
+    Route::delete('/tax/{id}',       'destroy');
 });

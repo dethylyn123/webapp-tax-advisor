@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class PropertyOwner extends Model
+class Property extends Model
 {
     use HasFactory;
 
@@ -14,7 +14,7 @@ class PropertyOwner extends Model
      *
      * @var string
      */
-    protected $table = 'property_owners';
+    protected $table = 'property';
 
     /**
      * The primary key associated with the table.
@@ -29,9 +29,8 @@ class PropertyOwner extends Model
      * @var array
      */
     protected $fillable = [
-        'property_owner_name',
-        'address',
-        'email',
-        'user_id',
+        'property_name',
+        'complete_address',
+        'property_owner_id',
     ];
 }

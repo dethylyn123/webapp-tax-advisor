@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('property_owners', function (Blueprint $table) {
-            $table->id('property_owner_id');
+            $table->id();
             $table->string('property_owner_name');
             $table->string('address');
             $table->string('email');
@@ -20,7 +20,7 @@ return new class extends Migration
         });
 
         Schema::table('property_owners', function (Blueprint $table) {
-            $table->unsignedBigInteger('user_id');      
+            $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
         });
     }

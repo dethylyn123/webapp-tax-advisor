@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PropertyOwnerController;
+use App\Http\Controllers\Api\PropertyController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -37,4 +38,12 @@ Route::controller(PropertyOwnerController::class)->group(function () {
     Route::post('/owner',              'store');
     Route::put('/owner/{id}',          'update');
     Route::delete('/owner/{id}',       'destroy');
+});
+
+Route::controller(PropertyController::class)->group(function () {
+    Route::get('/property',               'index');
+    Route::get('/property/{id}',          'show');
+    Route::post('/property',              'store');
+    Route::put('/property/{id}',          'update');
+    Route::delete('/property/{id}',       'destroy');
 });

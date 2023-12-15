@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Models\LandClassification;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProfileController;
 use App\Http\Controllers\Api\PropertyController;
@@ -21,11 +22,16 @@ use App\Http\Controllers\Api\LandClassificationController;
 |
 */
 
+//Public APIs
+Route::post('/login', [AuthController::class, 'login'])->name('user.login');
+
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/user', [UserController::class, 'index']);
+// Route::get('/user', [UserController::class, 'index']);
+Route::get('/user/{id}', [UserController::class, 'show']);
+Route::post('/user', [UserController::class, 'store'])->name('user.store');
 Route::put('/user/image/{id}', [UserController::class, 'image'])->name('user.image');
 Route::put('/user/{id}', [UserController::class, 'update'])->name('user.update');
 Route::put('/user/email/{id}', [UserController::class, 'email'])->name('user.email');

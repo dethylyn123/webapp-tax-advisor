@@ -14,8 +14,12 @@ class PropertyOwnerController extends Controller
      */
     public function index(Request $request)
     {
+        // Display data based on logged user
         return PropertyOwner::where('user_id', $request->user()->id)
             ->get();
+
+        //Display  all data; Uncomment if necessary 
+        // return PropertyOwner::all();
     }
 
     /**

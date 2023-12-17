@@ -14,12 +14,22 @@ class PropertyOwnerController extends Controller
      */
     public function index(Request $request)
     {
-        // Display data based on logged user
-        return PropertyOwner::where('user_id', $request->user()->id)
-            ->get();
+        // Show data based on logged user
+        $propertyOwner = PropertyOwner::where('user_id', $request->user()->id);
 
-        //Display  all data; Uncomment if necessary 
-        // return PropertyOwner::all();
+        // Cater Search use "keyword"
+        if ($request->keyword) {
+            $propertyOwner->where(function ($query) use ($request) {
+                $query->where('property_owner_name', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('address', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+        // Pagination based on number set; You can change the number below
+        return $propertyOwner->paginate(3);
+
+        // Show all date; Uncomment if necessary
+        // return CarouselItems::all();
     }
 
     /**

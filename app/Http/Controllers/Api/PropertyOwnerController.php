@@ -12,9 +12,10 @@ class PropertyOwnerController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return PropertyOwner::all();
+        return PropertyOwner::where('user_id', $request->user()->id)
+            ->get();
     }
 
     /**

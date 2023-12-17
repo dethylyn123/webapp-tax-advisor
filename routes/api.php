@@ -44,6 +44,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
 
     Route::controller(PropertyOwnerController::class)->group(function () {
         Route::get('/owner',               'index');
+        Route::get('/owner/all',               'all');
         Route::get('/owner/{id}',          'show');
         Route::post('/owner',              'store');
         Route::put('/owner/{id}',          'update');

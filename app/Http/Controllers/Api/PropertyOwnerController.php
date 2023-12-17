@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\PropertyOwner;
 use Illuminate\Http\Request;
 use App\Http\Requests\PropertyOwnerRequest;
+use App\Models\Property;
 
 class PropertyOwnerController extends Controller
 {
@@ -30,6 +31,16 @@ class PropertyOwnerController extends Controller
 
         // Show all date; Uncomment if necessary
         // return CarouselItems::all();
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function all(Request $request)
+    {
+        // Show data based on logged user
+        return PropertyOwner::where('user_id', $request->user()->id)
+            ->get();
     }
 
     /**

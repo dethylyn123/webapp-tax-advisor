@@ -6,15 +6,41 @@ use App\Http\Controllers\Controller;
 use App\Models\PropertyOwner;
 use Illuminate\Http\Request;
 use App\Http\Requests\PropertyOwnerRequest;
+use App\Models\Property;
 
 class PropertyOwnerController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return PropertyOwner::all();
+        // Show data based on logged user
+        $propertyOwner = PropertyOwner::where('user_id', $request->user()->id);
+
+        // Cater Search use "keyword"
+        if ($request->keyword) {
+            $propertyOwner->where(function ($query) use ($request) {
+                $query->where('property_owner_name', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('address', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+        // Pagination based on number set; You can change the number below
+        return $propertyOwner->paginate(3);
+
+        // Show all date; Uncomment if necessary
+        // return CarouselItems::all();
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function all(Request $request)
+    {
+        // Show data based on logged user
+        return PropertyOwner::where('user_id', $request->user()->id)
+            ->get();
     }
 
     /**

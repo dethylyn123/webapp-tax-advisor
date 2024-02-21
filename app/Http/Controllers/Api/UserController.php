@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Api;
 
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\UserRequest;
 use App\Models\User;
@@ -13,8 +14,50 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
+        // // Show data based on logged user
+        // $user = User::all();
+
+        // // Cater Search use "keyword"
+        // if ($request->keyword) {
+        //     $user->where(function ($query) use ($request) {
+        //         $query->where('lastname', 'like', '%' . $request->keyword . '%')
+        //             ->orWhere('firstname', 'like', '%' . $request->keyword . '%');
+        //     });
+        // }
+
+        // // Pagination based on number set; You can change the number below
+        // return $user->paginate(3);
+
+        // // Show all data; Uncomment if necessary
+        // // return User::all();
+
+        // Query builder instance
+        $query = User::query();
+
+        // Cater Search use "keyword"
+        if ($request->keyword) {
+            $query->where(function ($query) use ($request) {
+                $query->where('lastname', 'like', '%' . $request->keyword . '%')
+                    ->orWhere('firstname', 'like', '%' . $request->keyword . '%');
+            });
+        }
+
+        // Pagination based on the number set; You can change the number below
+        $perPage = 3;
+        return $query->paginate($perPage);
+
+        // Show all data; Uncomment if necessary
+        // return User::all();
+    }
+
+    /**
+     * Display a listing of the resource.
+     */
+    public function all(Request $request)
+    {
+        // Show data based on logged user
         return User::all();
     }
 
@@ -31,9 +74,19 @@ class UserController extends Controller
      */
     public function store(UserRequest $request)
     {
+        // $validated = $request->validated();
+
+        // $validated['password'] = Hash::make($validated['password']);
+
+        // $user = User::create($validated);
+
+        // return $user;
+
+        // Retrieve the validated input data...
         $validated = $request->validated();
 
-        $validated['password'] = Hash::make($validated['password']);
+        // Store in carousel folder the image
+        $validated['image'] = $request->file('image')->storePublicly('user', 'public');
 
         $user = User::create($validated);
 
@@ -49,17 +102,33 @@ class UserController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(UserRequest $request, string $id)
+    {
+        $validated = $request->validated();
+
+        // Upload Image to Backend and Store Image Path
+        $validated['image'] = $request->file('image')->storePublicly('user', 'public');
+
+        // Get Info by Id 
+        $user = User::findOrFail($id);
+
+        // Delete Previous Image
+        if (!is_null($user->image)) {
+            Storage::disk('public')->delete($user->image);
+        }
+
+        // Update New Info
+        $user->update($validated);
+
+        return $user;
+    }
+
+    /**
+     * Update the name of the specified resource in storage.
+     */
+    public function name(UserRequest $request, string $id)
     {
         $user = User::findOrFail($id);
 

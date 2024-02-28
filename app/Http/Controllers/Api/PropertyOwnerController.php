@@ -27,7 +27,7 @@ class PropertyOwnerController extends Controller
         }
 
         // Pagination based on number set; You can change the number below
-        return $propertyOwner->paginate(3);
+        return $propertyOwner->paginate(10);
 
         // Show all date; Uncomment if necessary
         // return CarouselItems::all();

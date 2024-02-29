@@ -39,10 +39,10 @@ class UserRequest extends FormRequest
             return [
                 'firstname' => 'required|string|min:5',
                 'lastname' => 'required|string|min:5',
-                'role'     => 'required|string',
+                // 'role'     => 'required|string',
                 'email' => 'required|string|email|max:255',
-                'password' => 'required|min:8|confirmed',
-                'image' => 'required|image|mimes:jpg,bmp,png|max:2048'
+                // 'password' => 'required|min:8|confirmed',
+                'image' => 'nullable|image|mimes:jpg,bmp,png|max:2048'
             ];
         } else if (request()->routeIs('user.name')) {
             return [
@@ -54,6 +54,7 @@ class UserRequest extends FormRequest
             ];
         } else if (request()->routeIs('user.password')) {
             return [
+                'old_password' => 'required',
                 'password' => 'required|confirmed|min:8'
             ];
         } else if (request()->routeIs('user.image') || request()->routeIs('profile.image')) {

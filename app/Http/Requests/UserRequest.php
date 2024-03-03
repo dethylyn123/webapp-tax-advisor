@@ -39,9 +39,9 @@ class UserRequest extends FormRequest
             return [
                 'firstname' => 'required|string|min:5',
                 'lastname' => 'required|string|min:5',
-                // 'role'     => 'required|string',
+                'role'     => 'required|string',
                 'email' => 'required|string|email|max:255',
-                // 'password' => 'required|min:8|confirmed',
+                'password' => 'nullable|min:8|confirmed',
                 'image' => 'nullable|image|mimes:jpg,bmp,png|max:2048'
             ];
         } else if (request()->routeIs('user.name')) {

@@ -49,6 +49,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::get('/owner/all',               'all');
         Route::get('/owner/{id}',          'show');
         Route::post('/owner',              'store');
+        Route::get('/owner/property/{id}',   'viewProperty');
         Route::put('/owner/{id}',          'update');
         Route::delete('/owner/{id}',       'destroy');
     });

@@ -110,33 +110,33 @@ class UserController extends Controller
 
         // Check if a file was uploaded
         if ($request->hasFile('image')) {
-
             // Upload Image to Backend and Store Image Path
             $validated['image'] = $request->file('image')->storePublicly('user', 'public');
-
-            // Get Info by Id 
-            $user = User::findOrFail($id);
-
-            // Delete Previous Image
-            if (!is_null($user->image)) {
-                Storage::disk('public')->delete($user->image);
-            }
-
-            // Update New Info
-            $user->update($validated);
-
-            return $user;
         }
 
-        // If no file was uploaded or if the file is not valid, proceed without updating the image
         // Get Info by Id 
         $user = User::findOrFail($id);
 
-        // Update New Info without modifying the image
+        // Update password only if provided
+        if (isset($validated['password'])) {
+            $user->password = bcrypt($validated['password']);
+        }
+
+        // Delete Previous Image
+        if (!is_null($user->image)) {
+            Storage::disk('public')->delete($user->image);
+        }
+
+        // Remove 'password' from $validated array to prevent setting it to null
+        unset($validated['password']);
+
+        // Update other information
         $user->update($validated);
 
         return $user;
     }
+
+
 
     /**
      * Update the name of the specified resource in storage.
@@ -176,7 +176,7 @@ class UserController extends Controller
     public function password(UserRequest $request, string $id)
     {
         $user = User::findOrFail($id);
-        
+
         // Validate old password
         if (!Hash::check($request->old_password, $user->password)) {
             return response()->json(['message' => 'Current password is incorrect.'], 422);

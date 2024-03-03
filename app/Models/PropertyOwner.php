@@ -34,4 +34,5 @@ class PropertyOwner extends Model
         'email',
         'user_id',
     ];
+    
 }

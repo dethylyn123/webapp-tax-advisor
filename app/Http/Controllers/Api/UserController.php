@@ -102,39 +102,43 @@ class UserController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
-     */
-    public function update(UserRequest $request, string $id)
-    {
-        $validated = $request->validated();
+ * Update the specified resource in storage.
+ */
+public function update(UserRequest $request, string $id)
+{
+    $validated = $request->validated();
 
-        // Check if a file was uploaded
-        if ($request->hasFile('image')) {
-            // Upload Image to Backend and Store Image Path
-            $validated['image'] = $request->file('image')->storePublicly('user', 'public');
-        }
+    // Get Info by Id 
+    $user = User::findOrFail($id);
 
-        // Get Info by Id 
-        $user = User::findOrFail($id);
+    // Update password only if provided
+    if (isset($validated['password'])) {
+        $user->password = bcrypt($validated['password']);
+    }
 
-        // Update password only if provided
-        if (isset($validated['password'])) {
-            $user->password = bcrypt($validated['password']);
-        }
+    // Check if a file was uploaded
+    if ($request->hasFile('image')) {
+        // Upload Image to Backend and Store Image Path
+        $validated['image'] = $request->file('image')->storePublicly('user', 'public');
 
         // Delete Previous Image
         if (!is_null($user->image)) {
             Storage::disk('public')->delete($user->image);
         }
-
-        // Remove 'password' from $validated array to prevent setting it to null
-        unset($validated['password']);
-
-        // Update other information
-        $user->update($validated);
-
-        return $user;
+    } else {
+        // If no new image uploaded, keep the existing image path
+        unset($validated['image']);
     }
+
+    // Remove 'password' from $validated array to prevent setting it to null
+    unset($validated['password']);
+
+    // Update other information
+    $user->update($validated);
+
+    return $user;
+}
+
 
 
 

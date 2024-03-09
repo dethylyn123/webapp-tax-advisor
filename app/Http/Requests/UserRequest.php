@@ -39,7 +39,7 @@ class UserRequest extends FormRequest
             return [
                 'firstname' => 'required|string|min:5',
                 'lastname' => 'required|string|min:5',
-                'role'     => 'required|string',
+                'role'     => 'nullable|string',
                 'email' => 'required|string|email|max:255',
                 'password' => 'nullable|min:8|confirmed',
                 'image' => 'nullable|image|mimes:jpg,bmp,png|max:2048'

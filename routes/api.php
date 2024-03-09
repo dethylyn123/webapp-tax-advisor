@@ -3,6 +3,7 @@
 use Illuminate\Http\Request;
 use App\Models\LandClassification;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\QueryController;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\ProfileController;
@@ -77,4 +78,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
         Route::put('/tax/{id}',          'update');
         Route::delete('/tax/{id}',       'destroy');
     });
+
+    Route::get('/statistics', [QueryController::class, 'statistics']);
+    Route::get('/statistics/owners', [QueryController::class, 'statisticsOwners']);
 });
